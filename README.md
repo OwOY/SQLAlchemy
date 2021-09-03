@@ -1,7 +1,6 @@
-# flask_sqlalchemy  
-### 創建以及初始化  
 
-----  
+### 創建以及初始化  
+## flask_sqlalchemy  
 ```
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
@@ -33,38 +32,8 @@ PORT = "3306"
 DATABASE = "test"
 app.config['SQLALCHEMY_DATABASE_URI'] = [DB_TYPE]+[DRIVER]://[USERNAME]:[PASSWORD]@[HOST]:[PORT]/[DATABASE]
 ```
-----  
-### CORS
-- 跨域設置  
-```
-from flask_cors import *
-CORS(app, support_credentials=True)
-```
-----  
-### Sequenct
-```
-from sqlalchemy import Sequence
-ex. 
-id = db.column(format, Sequenct(tablename), nullable = False, primary_key=True)  #讓db自動默認排列
-datetime = db.column(db.datetime, Sequenct(tablename), default=datetime.now(), nullable = False)  
-```
-- format  
-db.Integer    數字
-db.String(50) 文字
-db.Datetime   日期格式
-eq...  
-
-----  
-### session_options
-```
-from flask_sqlalchemy import SQLAlchemy  
-db = SQLAlchemy(session_options={'autoflush' : False}) #關閉自動刷新session
-```
-----  
-# sqlalchemy
-### 創建及初始化
-
-----  
+---- 
+## sqlalchemy
 ```
 from sqlalchemy import create_engine
 
@@ -82,4 +51,45 @@ engine = create_engine([DB_TYPE]+[DRIVER]://[USERNAME]:[PASSWORD]@[HOST]:[PORT]/
                         pool_recycle=-1  # 多久之後對執行緒池中的執行緒進行一次連線的回收（重置）
                         )
 conn = engine.connect()  #類似SQL連線
+```
+----  
+
+### CORS
+- 跨域設置  
+```
+from flask_cors import *
+CORS(app, support_credentials=True)
+```
+----  
+### Sequenct
+```
+from sqlalchemy import Sequence
+id = db.column(format, Sequenct(tablename), nullable = False, primary_key=True)  #讓db自動默認排列
+ex. datetime = db.column(db.datetime, Sequenct(tablename), default=datetime.now(), nullable = False)  
+```
+- format  
+db.Integer    數字
+db.String(50) 文字
+db.Datetime   日期格式
+eq...  
+
+----  
+### session_options
+```
+from flask_sqlalchemy import SQLAlchemy  
+db = SQLAlchemy(session_options={'autoflush' : False}) #關閉自動刷新session
+```
+----  
+
+### SQL連接使用
+
+```
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String, unique=True, nullable=False)
+    email = db.Column(db.String, unique=True, nullable=False)
+
+
+db.session.add(User(username="Flask", email="example@example.com"))
+db.session.commit()
 ```
