@@ -90,6 +90,20 @@ class User(db.Model):
     email = db.Column(db.String, unique=True, nullable=False)
 
 
-db.session.add(User(username="Flask", email="example@example.com"))
-db.session.commit()
+db.session.add(self))    #新增
+db.session.merge(self)   #修改
+db.session.delete(self)  #刪除
+db.session.commit()      #確認修改
+db.rollback()            #回歸原始點(一般在except後)
 ```
+---- 
+### 新建Table
+```
+db.create_all()
+```
+- 若出現no application found  
+```
+with app.app_context():
+    db.create_all()
+```
+---- 
