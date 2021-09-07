@@ -61,7 +61,7 @@ from flask_cors import *
 CORS(app, support_credentials=True)
 ```
 ----  
-### Sequenct
+### Sequence
 ```
 from sqlalchemy import Sequence
 id = db.column(format, Sequenct(tablename), nullable = False, primary_key=True)  #讓db自動默認排列
