@@ -66,15 +66,16 @@ CORS(app, support_credentials=True)
 ```
 ----  
 ### Sequence
+Example:
 ```
 from sqlalchemy import Sequence
 id = db.column(format, Sequenct(tablename), nullable = False, primary_key=True)  #讓db自動默認排列
-ex. datetime = db.column(db.datetime, Sequenct(tablename), default=datetime.now(), nullable = False)  
+datetime = db.column(db.datetime, Sequenct(tablename), default=datetime.now(), nullable = False)  
 ```
 - format  
-db.Integer    數字
-db.String(50) 文字
-db.Datetime   日期格式
+db.Integer    數字  
+db.String(50) 文字  
+db.Datetime   日期格式  
 eq...  
 
 ----  
