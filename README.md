@@ -9,17 +9,21 @@ app.config.from_object(configname) #載入設定檔案，須有一個configname.
 app.config.from_pyfile(configname) #載入設定檔案，須有一個configname.py檔案
 db.init(app)  初始化app
 ```
-- config.py(以下連線至postgresql為例子)  
+- configname.py(以下連線至postgresql為例子)  
 ```
-DB_TYPE = "postgresql"
+DIALCT = "postgresql"
 DRIVER = "psycopg2"
 USERNAME = "postgres"
 PASSWORD = "test"
 HOST = "127.0.0.1"
 PORT = "5432"
-DATABASE = "BPS"
-app.config['SQLALCHEMY_DATABASE_URI'] = [DB_TYPE]+[DRIVER]://[USERNAME]:[PASSWORD]@[HOST]:[PORT]/[DATABASE]
-
+DATABASE = "test"
+DB_URI = f"{DIALCT}+{DRIVER}://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}"
+SQLALCHEMY_DATABASE_URI = DB_URI
+print(SQLALCHEMY_DATABASE_URI)
+JSON_AS_ASCII = False
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+SQLALCHEMY_ECHO = False
 ```
 - config.py(以下連線至mysql為例子)  
 ```
