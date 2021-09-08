@@ -35,6 +35,27 @@ HOST = "127.0.0.1"
 PORT = "3306"
 DATABASE = "test"
 app.config['SQLALCHEMY_DATABASE_URI'] = [DB_TYPE]+[DRIVER]://[USERNAME]:[PASSWORD]@[HOST]:[PORT]/[DATABASE]
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+```
+---- 
+### app.config 參數介紹 (3.0後不適用)
+- SQLALCHEMY_DATABASE_URL(連線設定)
+```
+app.config['SQLALCHEMY_DATABASE_URI'] = [DB_TYPE]+[DRIVER]://[USERNAME]:[PASSWORD]@[HOST]:[PORT]/[DATABASE]
+```
+- SQLALCHEMY_ENGINE_OPTIONS(引擎設置)
+```
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+    "pool_pre_ping": True,
+    "pool_recycle": 300, 連接回收時間
+    'pool_timeout': 900, 連線等待時間
+    'pool_size': 10,   最大連線數
+    'max_overflow': 5, 連線滿後加開多少
+}
+```
+- SQLALCHEMY_ECHO(debug設置)
+```
+app.config['SQLALCHEMY_ECHO'] = True
 ```
 ---- 
 ## sqlalchemy
@@ -56,8 +77,29 @@ engine = create_engine([DB_TYPE]+[DRIVER]://[USERNAME]:[PASSWORD]@[HOST]:[PORT]/
                         )
 conn = engine.connect()  #類似SQL連線
 ```
-----  
+### 操作Database
+----
+- 前置條件
+```
+from flask_sqlalchemy import SQLAlchemy
+from flask import Flask
 
+app = Flask(__name__)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:test@127.0.0.1:5432/test'
+db = SQLAlchemy()
+db.init(app)
+```
+- 新建資料
+```
+db.engine.execute(f'INSERT INTO {table} VALUES (test)')
+```
+- 搜尋資料
+```
+db.engine.execute(f'SELECT * from {table}')
+```
+
+----  
 ### CORS
 - 跨域設置  
 ```
