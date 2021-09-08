@@ -28,6 +28,10 @@ class ObjUserSchema(Schema):
     # 更新時間
     update_time = fields.DateTime()
 
+
+UserSchema = ObjUserSchema()
+dic_data = UserSchema.dump(data)  #dict
+json_data = UserSchema.dumps(data)  #dict
 ```
 
 ### 輸出格式
