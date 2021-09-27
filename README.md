@@ -1,3 +1,13 @@
+<div align="center" ><img src="https://flask-sqlalchemy.palletsprojects.com/en/2.x/_images/flask-sqlalchemy-title.png" width=1500></div>  
+
+----------  
+
+>> Flask_sqlalchemy遵循MVC原則  
+>> 主要含有三大元素 Model、Controller、View  
+>> Model主要負責創建模型，對應Database中的欄位  
+>> View主要負責作呈現，可使用Marshmallow做序列化呈現  
+>> Controller主要負責創建供使用者視覺化操作之部分  
+
 
 ### 創建以及初始化  
 ## flask_sqlalchemy  
@@ -111,8 +121,8 @@ CORS(app, support_credentials=True)
 Example:
 ```
 from sqlalchemy import Sequence
-id = db.column(format, Sequenct(tablename), nullable = False, primary_key=True)  #讓db自動默認排列
-datetime = db.column(db.datetime, Sequenct(tablename), default=datetime.now(), nullable = False)  
+id = db.column(format, Sequence(tablename), nullable = False, primary_key=True)  #讓db自動默認排列
+datetime = db.column(db.datetime, Sequence(tablename), default=datetime.now(), nullable = False)  
 ```
 - format  
 db.Integer    數字  
@@ -154,3 +164,26 @@ with app.app_context():
     db.create_all()
 ```
 ---- 
+
+## Model 
+### Create
+```
+db = SQLAlchemy()
+
+class Objtestuse():
+    __tablename__ = 'test'
+    
+    id = db.Column(db.Integer, Sequence('TBL_INCOMING_INFO_id_seq'), primary_key=True, nullable=False)
+    text = db.Column(db.String(50), db.ForeignKey('TBL_MATERIAL_BUY_CODE.buy_code'), nullable=True)
+    is_bool = db.Column(db.Boolean, nullable=True)
+    datetime = db.Column(db.DateTime, nullable=True, default = datetime.now)
+```
+### Use
+```
+ft = [Objtestuse.id == 1]
+result = Objtestuse.query.outerjoin(Objtes1tuse, Objtes2tuse)\
+            .filter(*ft).order_by(Objtestuse.id) \
+            .paginate(page, per_page=size, error_out=False)
+text = ObjtestuseSchema.dump(result.items, many=True)
+```
+
