@@ -186,6 +186,8 @@ result = Objtestuse.query.outerjoin(Objtes1tuse, Objtes2tuse)\
             .paginate(page, per_page=size, error_out=False)
 text = ObjtestuseSchema.dump(result.items, many=True)
 ```
-### Show出model所有值  
+### Show出model所有值 
+```
 model = MYMODEL
 columns = [m.key for m in model.__table__.columns]
+```
