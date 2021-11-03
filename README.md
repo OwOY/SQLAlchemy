@@ -147,7 +147,7 @@ class User(db.Model):
     email = db.Column(db.String, unique=True, nullable=False)
 
 
-db.session.add(self))    #新增
+db.session.add(self)    #新增
 db.session.merge(self)   #修改
 db.session.delete(self)  #刪除
 db.session.commit()      #確認修改
@@ -170,7 +170,7 @@ with app.app_context():
 ```
 db = SQLAlchemy()
 
-class Objtestuse():
+class Objtestuse(db.Model):
     __tablename__ = 'test'
     
     id = db.Column(db.Integer, Sequence('TBL_INCOMING_INFO_id_seq'), primary_key=True, nullable=False)
@@ -179,12 +179,28 @@ class Objtestuse():
     datetime = db.Column(db.DateTime, nullable=True, default = datetime.now)
 ```
 ### Use
+- Serach
 ```
 ft = [Objtestuse.id == 1]
 result = Objtestuse.query.outerjoin(Objtes1tuse, Objtes2tuse)\
             .filter(*ft).order_by(Objtestuse.id) \
             .paginate(page, per_page=size, error_out=False)
 text = ObjtestuseSchema.dump(result.items, many=True)
+```
+- Search(不分大小寫)
+```
+result = Objtestuse.query.filter(Objtestuse.name.ilike('test').all()
+data = ObjtestuseSchema.dump(result, many=True)
+```
+- Add
+```
+data = {'name':name}
+Objtestuse(data).save()
+```
+- Updata
+```
+data = {'name':name}
+Objtestuse(data).update()
 ```
 ### Show出model所有值 
 ```
