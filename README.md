@@ -137,9 +137,7 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy(session_options={'autoflush' : False}) #關閉自動刷新session
 ```
 ----  
-
 ### SQL連接使用
-
 ```
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -152,6 +150,18 @@ db.session.merge(self)   #修改
 db.session.delete(self)  #刪除
 db.session.commit()      #確認修改
 db.rollback()            #回歸原始點(一般在except後)
+```
+---- 
+### 多個DB連接  
+```
+from sqlalchemy.engine.base import Engine
+from sqlalchemy.orm import sessionmaker
+
+ENGINE: Engine = create_engine(BP_URI, echo=False, convert_unicode=True, pool_recycle=3600, pool_size=20, pool_timeout=60)
+Session = sessionmaker()
+Session.configure(bind=ENGINE)
+sess = Session()
+sess.query.all()
 ```
 ---- 
 ### 新建Table
