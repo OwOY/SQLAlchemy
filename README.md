@@ -189,7 +189,16 @@ class Objtestuse(db.Model):
     datetime = db.Column(db.DateTime, nullable=True, default = datetime.now)
 ```
 ### Use
-- Serach
+#### Serach
+1. common
+```
+ft = [Objtestuse.id == 3]
+# method1
+result = db.session.query(Objtestuse.id).filter(*ft).all()
+# method2
+result = Objtestuse.query.filter(*ft).all()
+```
+2. outerjoin
 ```
 ft = [Objtestuse.id == 1]
 result = Objtestuse.query.outerjoin(Objtes1tuse, Objtes2tuse)\
@@ -197,22 +206,30 @@ result = Objtestuse.query.outerjoin(Objtes1tuse, Objtes2tuse)\
             .paginate(page, per_page=size, error_out=False)
 text = ObjtestuseSchema.dump(result.items, many=True)
 ```
-- Search(不分大小寫)
+3. Search(不分大小寫)
 ```
 result = Objtestuse.query.filter(Objtestuse.name.ilike('test').all()
 data = ObjtestuseSchema.dump(result, many=True)
 ```
-- Add
+#### Add
 ```
-data = {'name':name}
-Objtestuse(data).save()
+Objtestuse.name = name
+db.session.add(Objtestuse)
+db.session.commit()
+
+Obj_id = objtestuse.id   # 若新增後   該值的ID
 ```
-- Updata
+#### Updata
 ```
-data = {'name':name}
-Objtestuse(data).update()
+db.session.query.filter(Objtestuse.id == 3).update({'name':name})
+db.session.commit()
 ```
-### Show出model所有值 
+#### delete
+```
+db.session.query.filter(Objtestuse.id == 3).delete()
+db.session.commit()
+```
+### Show出model所有column 
 ```
 model = MYMODEL
 columns = [m.key for m in model.__table__.columns]
