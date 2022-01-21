@@ -1,7 +1,6 @@
 from flask_cors import *
 from flask_restplus import Api
 from flask import Flask
-from datetime import datetime
 from model.database import db
 
 
@@ -22,7 +21,7 @@ def initRouting(app):
     createApiUi(G_api)
 
 def createApiUi(G_api):
-    from APIGUI.UserInfo import api
+    from controller.UserInfo import api
     G_api.add_namespace(api)
 
 

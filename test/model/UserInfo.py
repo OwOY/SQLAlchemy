@@ -2,7 +2,7 @@ from model.database import db
 from datetime import datetime
 
 
-class md(db.Model):
+class ObjUserInfo(db.Model):
     __tablename__ = 'TBL_USER_INFO'
     # id
     id = db.Column(db.Integer, primary_key=True, nullable=False)
