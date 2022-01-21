@@ -11,6 +11,7 @@
 
 ### 創建以及初始化  
 ## flask_sqlalchemy  
+- main.py
 ```
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
@@ -134,7 +135,7 @@ eq...
 ### session_options
 ```
 from flask_sqlalchemy import SQLAlchemy  
-db = SQLAlchemy(session_options={'autoflush' : False}) #關閉自動刷新session
+db = SQLAlchemy(session_options={'autoflush' : False}) #關閉自動刷新session，避免查詢出不在DB之資料
 ```
 ----  
 ### SQL連接使用
@@ -152,7 +153,7 @@ db.session.commit()      #確認修改
 db.rollback()            #回歸原始點(一般在except後)
 ```
 ---- 
-### 多個DB連接  
+### 建立新的DB session
 ```
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.orm import sessionmaker
@@ -194,7 +195,7 @@ class Objtestuse(db.Model):
 ```
 ft = [Objtestuse.id == 3]
 # method1
-result = db.session.query(Objtestuse.id).filter(*ft).all()
+result = db.session.query(Objtestuse.id).filter(*ft).all() # <TBL_TEST_USE 3>
 # method2
 result = Objtestuse.query.filter(*ft).all()
 ```
@@ -206,7 +207,11 @@ result = Objtestuse.query.outerjoin(Objtes1tuse, Objtes2tuse)\
             .paginate(page, per_page=size, error_out=False)
 text = ObjtestuseSchema.dump(result.items, many=True)
 ```
-3. Search(不分大小寫)
+3. order_by  
+```
+Objtestuse.query.order_by(Objtestuse.id.desc()).all()
+```
+4. 不管大小寫
 ```
 result = Objtestuse.query.filter(Objtestuse.name.ilike('test').all()
 data = ObjtestuseSchema.dump(result, many=True)
@@ -220,11 +225,22 @@ db.session.commit()
 Obj_id = objtestuse.id   # 若新增後   該值的ID
 ```
 #### Updata
+- 單獨更新
 ```
 db.session.query.filter(Objtestuse.id == 3).update({'name':name})
 db.session.commit()
 ```
+- Merge更新
+```
+db.session.merge(Objtestuse(id==3, text='fefsd'))
+db.session.commit()
+```
 #### delete
+- 刪除全部資料
+```
+Objtest.query.delete()
+```
+- 根據條件刪除
 ```
 db.session.query.filter(Objtestuse.id == 3).delete()
 db.session.commit()
