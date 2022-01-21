@@ -1,13 +1,9 @@
 from model.database import db
 from datetime import datetime
-from DBSchema.UserSchema import ObjUserSchema
 
 
-UserSchema = ObjUserSchema()
 class md(db.Model):
-
     __tablename__ = 'TBL_USER_INFO'
-
     # id
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     # 人員ID
@@ -27,21 +23,26 @@ class md(db.Model):
     # 更新時間
     update_time = db.Column(db.DateTime, default=datetime.now())
 
-    # groups = db.relationship('ObjUserGroupMapping', backref='TBL_USER_INFO')
-
     def __repr__(self):
         return '<TBL_USER_INFO %r>' % self.id
 
-    def create(self, data):
-        db.session.add(data)
-        return db.session.commit()
+    def create(self):
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            
+    def update(self):
+        try:
+            db.session.merge(self)
+            db.session.commit()
+        except:
+            db.session.rollback()
     
-    def search(self, data):
-        # input_id = data.get('id', None)
-        data = db.engine.execute('SELECT * from "TBL_USER_INFO";')
-        for d in data:
-            json_data = UserSchema.dump(d)
-
-        # output = md.query.filter(md.id == input_id).all()
-        # out = ObjUserInfoSchema().dump(output)
-        return {'data':json_data}
+    def delete(self):
+        try:
+            db.session.delete(self)
+            db.session.commit()
+        except:
+            db.session.rollback()
