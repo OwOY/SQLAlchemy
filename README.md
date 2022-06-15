@@ -110,6 +110,12 @@ db.engine.execute(f'INSERT INTO {table} VALUES (test)')
 db.engine.execute(f'SELECT * from {table}')
 ```
 
+### MetaData
+```
+from sqlalchemy impor MetaData
+meta = MetaData(schema='table') #若想指定schema
+```
+
 ----  
 ### CORS
 - 跨域設置  
