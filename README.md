@@ -170,6 +170,14 @@ Session.configure(bind=ENGINE)
 sess = Session()
 sess.query.all()
 ```
+### scope_session
+- 用於保護session，確保每一個線程使用獨立的session
+```
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, scoped_session
+engine = create_engine(DB_URL, pool_recycle=3600, pool_size=20, pool_timeout=10, max_overflow=-1)
+session = scoped_session(sessionmaker(bind=engine))
+```
 ---- 
 ### 新建Table
 ```
