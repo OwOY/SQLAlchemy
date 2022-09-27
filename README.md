@@ -204,7 +204,7 @@ class Objtestuse(db.Model):
     datetime = db.Column(db.DateTime, nullable=True, default = datetime.now)
 ```
 ### Use
-#### Serach
+#### Search
 1. common
 ```
 ft = [Objtestuse.id == 3]
@@ -249,7 +249,7 @@ db.session.commit()
 db.session.merge(Objtestuse(id==3, text='fefsd'))
 db.session.commit()
 ```
-#### delete
+#### Delete
 - 刪除全部資料
 ```
 Objtest.query.delete()
